@@ -1,3 +1,4 @@
+import cloudinary from "@/lib/cloudinary";
 import { connectDB } from "@/lib/config/db";
 import BlogModel from "@/lib/models/BlogModel";
 
@@ -26,20 +27,31 @@ export async function GET(request) {
 
 }
 
+// Helper: Upload file to Cloudinary using buffer
+const uploadToCloudinary = async (file) => {
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload_stream({ folder: "blogs" }, (error, result) => {
+      if (error) return reject(error);
+      resolve(result.secure_url);
+    }).end(buffer);
+  });
+};
+
 
 export async function POST(request) {
   const formData = await request.formData();
-  const timestamp = Date.now();
 
-  const image = formData.get("image");
-  const imageByteData = await image.arrayBuffer();
-  const buffer = Buffer.from(imageByteData);
-  const imagePath = `./public/${timestamp}_${image.name}`;
-  await writeFile(imagePath, buffer);
-  const imageUrl = `/${timestamp}_${image.name}`;
+  const imageFile = formData.get("image");
+
+let imageUrl="";
+if(imageFile && typeof imageFile ==="object"){
+  imageUrl = await uploadToCloudinary(imageFile);
+}
 
   const authorImg = formData.get("authorImg"); 
-  console.log("authorImg:", authorImg); 
   const blogData = {
     title: formData.get("title"),
     description: formData.get("description"),
@@ -58,7 +70,7 @@ export async function POST(request) {
 export async function DELETE(request){
   const blogId=request.nextUrl.searchParams.get("id");
   const blog=await BlogModel.findById(blogId);
-  fs.unlink(`./public/${blog.image}`,()=>{})
+ // fs.unlink(`./public/${blog.image}`,()=>{})
   await BlogModel.findByIdAndDelete(blogId);
   return NextResponse.json({ message: "Blog Deleted", success: true });
 }
@@ -81,13 +93,14 @@ export async function PUT(request) {
   const image = formData.get("image");
 
   if (image && typeof image.arrayBuffer === "function") {
-    const imageByteData = await image.arrayBuffer();
-    const buffer = Buffer.from(imageByteData);
-    const imagePath = `./public/${blogId}_${image.name}`;
-    await writeFile(imagePath, buffer);
-    const imageUrl = `/${blogId}_${image.name}`;
-    blogData.image = imageUrl;
+    try {
+      const imageUrl = await uploadToCloudinary(image);
+      blogData.image = imageUrl;
+    } catch (error) {
+      return NextResponse.json({ message: "Error uploading image", success: false });
+    }
   }
+
 
   await BlogModel.findByIdAndUpdate(blogId, blogData);
   return NextResponse.json({ message: "Blog Updated", success: true });

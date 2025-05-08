@@ -48,3 +48,15 @@ export async function POST(req){
     return NextResponse.json({message:"user created successfully", user:newUser}, {status:201});
 
 }
+
+export async function GET(req){
+  try {
+    const users=await User.find({});
+
+    return NextResponse.json({mssage:"Fetche all users",users},{status:200});
+    
+  } catch (error) {
+    console.log(error);
+  }
+
+}

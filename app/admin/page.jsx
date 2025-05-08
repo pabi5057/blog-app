@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 const Dashboard = () => {
 const [blogs, setBlogs] = useState([]);
 const [emails,setEmails]=useState([]);
+const [users,setUsers]=useState();
   const stats = [
     { id: 1, title: 'Subscriptions', value: emails.length, icon: (
       <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -27,7 +28,7 @@ const [emails,setEmails]=useState([]);
         <path d="M2 12a10 10 0 0 1 20 0 10 10 0 0 1-20 0z"></path>
       </svg>
     ) },
-    { id: 4, title: 'Active Users', value: 321, icon: (
+    { id: 4, title: 'Active Users', value: users.length, icon: (
       <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
@@ -48,8 +49,14 @@ const fetchEmails=async()=>{
     setEmails(response.data.emails);
 }
 
+const fetchUsers=async()=>{
+  const response =await axios.get('/api/signup');
+  setUsers(response.data.users);
+}
+
 useEffect(() => {
     fetchEmails();
+    fetchUsers()
 }, []);
 
     useEffect(() => {
