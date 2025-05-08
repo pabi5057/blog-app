@@ -19,7 +19,6 @@ function Header({session}) {
         formData.append("email", email);
 
             const res = await axios.post('/api/email', formData);
-            console.log("response is", res.data);
              if (res.data.success) {
                 toast.success(res.data.message);
                 setEmail("");
