@@ -1,6 +1,5 @@
 "use client"
 
-import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -42,30 +41,6 @@ export default function SignIn() {
         }
 
     }
-
-    // const handleSubmit = async(e) => {
-    //     e.preventDefault();
-    //   try {
-    //     const response = await axios.post('/api/signin', signInData, {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     });
-    //     if (response.status === 200) {
-    //         toast.success(response.data.message || 'User signed in successfully!');
-    //         setSignInData({
-    //             email: '',
-    //             password: '',
-    //         });
-    //     } else {
-    //         toast.error('Error signing in. Please try again.');
-    //     }   
-        
-    //   } catch (error) {
-    //     toast.error(error.response?.data?.message || 'An error occurred. Please try again.');
-        
-    //   }
-    // };
 
     return (
         <>

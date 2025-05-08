@@ -15,11 +15,6 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // const client = await clientPromise;
-        // const db = client.db(); // or db("your-db-name") if needed
-
-        // const user = await db.collection("users").findOne({ email: credentials.email });
-
         await connectDB();
         const user = await User.findOne({ email: credentials.email });
 

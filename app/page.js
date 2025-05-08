@@ -9,7 +9,6 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  console.log("session  user-----",session);
   return (
    <>
    <ToastContainer theme="dark" />
