@@ -5,9 +5,9 @@ const nextConfig = {
     },
     redirects: async () => [
       {
-        source: '/old-route',
-        destination: '/new-route',
-        permanent: true,
+        source: '/',
+        destination: '/admin',
+        permanent: false,
       },
     ],
   };
