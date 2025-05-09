@@ -3,27 +3,29 @@ import { connectDB } from "@/lib/config/db";
 import BlogModel from "@/lib/models/BlogModel";
 
 const { NextResponse } = require("next/server");
-import {writeFile} from "fs/promises";
-const fs = require("fs");
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
+import mongoose from "mongoose";
+
 
 
 const loadDB = async () => {
-      await connectDB();
+  await connectDB();
 };
 loadDB().catch((err) => {
-    console.log("Error connecting to MongoDB:", err);
+  console.log("Error connecting to MongoDB:", err);
 });
 
 export async function GET(request) {
-    const blogId=request.nextUrl.searchParams.get("id");
-    if(blogId){
-        const blog=await BlogModel.findById(blogId);
-        return NextResponse.json({ blog});
-    }else{
-        const blogs=await BlogModel.find({});
-        return NextResponse.json({ message: "GET request successful",blogs});
-    }
-   
+  const blogId = request.nextUrl.searchParams.get("id");
+  if (blogId) {
+    const blog = await BlogModel.findById(blogId).populate("user");
+    return NextResponse.json({ blog });
+  } else {
+    const blogs = await BlogModel.find({}).populate("user");
+    return NextResponse.json({ message: "GET request successful", blogs });
+  }
+
 
 }
 
@@ -41,36 +43,46 @@ const uploadToCloudinary = async (file) => {
 };
 
 
+
+
 export async function POST(request) {
   const formData = await request.formData();
 
+  const session = await getServerSession(authOptions);
+  console.log("session data is",session)
+  if (!session || !session.user) {
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  const userId = session.user.id;
   const imageFile = formData.get("image");
 
-let imageUrl="";
-if(imageFile && typeof imageFile ==="object"){
-  imageUrl = await uploadToCloudinary(imageFile);
-}
+  let imageUrl = "";
+  if (imageFile && typeof imageFile === "object") {
+    imageUrl = await uploadToCloudinary(imageFile);
+  }
 
-  const authorImg = formData.get("authorImg"); 
+
+  const authorImg = formData.get("authorImg");
   const blogData = {
     title: formData.get("title"),
     description: formData.get("description"),
     category: formData.get("category"),
     author: formData.get("author"),
     image: imageUrl,
-    author_img: authorImg || "", 
+    author_img: authorImg || "",
+    user:new mongoose.Types.ObjectId(userId),
   };
-
   await BlogModel.create(blogData);
   return NextResponse.json({ message: "Blog Added", success: true });
 }
 
 
 //handle delete blog
-export async function DELETE(request){
-  const blogId=request.nextUrl.searchParams.get("id");
-  const blog=await BlogModel.findById(blogId);
- // fs.unlink(`./public/${blog.image}`,()=>{})
+export async function DELETE(request) {
+  const blogId = request.nextUrl.searchParams.get("id");
+  const blog = await BlogModel.findById(blogId);
+  // fs.unlink(`./public/${blog.image}`,()=>{})
   await BlogModel.findByIdAndDelete(blogId);
   return NextResponse.json({ message: "Blog Deleted", success: true });
 }

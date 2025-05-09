@@ -19,7 +19,6 @@ function Page({ params }) {
                 id:id
             }
         });
-        console.log("blog data is",response.data.blog);
         setData(response.data.blog);
     }
 
@@ -46,8 +45,8 @@ function Page({ params }) {
                 </div>
                 <div className="text-center my-24">
                     <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto">{data.title}</h1>
-                    <Image src={assets.profile_icon} alt="" width={60} height={60} className="mx-auto mt-6 border border-white rounded-full" />
-                    <p className="mt-1 pb-2 text-lg max-w-[740px] mx-auto">{data.author}</p>
+                    <Image src={data?.user?.image} alt="" width={60} height={60} className="mx-auto mt-6 border border-white rounded-full" />
+                    <p className="mt-1 pb-2 text-lg max-w-[740px] mx-auto">{data?.user?.fullname}</p>
                 </div>
             </div>
             <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">

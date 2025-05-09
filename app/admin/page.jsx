@@ -1,12 +1,28 @@
 "use client";
 
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const Dashboard = () => {
 const [blogs, setBlogs] = useState([]);
 const [emails,setEmails]=useState([]);
 const [users,setUsers]=useState();
+const {data:session,status}=useSession();
+const [loading,setLoading]=useState(true);
+const router =useRouter();
+
+useEffect(()=>{
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
+},[status, router]);
+
+if (status === "loading") {
+  return <div>Loading...</div>;
+}
+
   const stats = [
     { id: 1, title: 'Subscriptions', value: emails.length, icon: (
       <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -28,7 +44,7 @@ const [users,setUsers]=useState();
         <path d="M2 12a10 10 0 0 1 20 0 10 10 0 0 1-20 0z"></path>
       </svg>
     ) },
-    { id: 4, title: 'Active Users', value: users.length, icon: (
+    { id: 4, title: 'Active Users', value: users?.length, icon: (
       <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
@@ -40,18 +56,20 @@ const [users,setUsers]=useState();
   const fetchBlogs = async () => {
     const response = await axios.get('/api/blog');
     setBlogs(response.data.blogs);
-    console.log("blogs data is", response.data.blogs);
+    setLoading(false);
 }
 
 
 const fetchEmails=async()=>{
     const response=await axios.get('/api/email');
     setEmails(response.data.emails);
+    setLoading(false)
 }
 
 const fetchUsers=async()=>{
   const response =await axios.get('/api/signup');
   setUsers(response.data.users);
+  setLoading(false)
 }
 
 useEffect(() => {
@@ -64,7 +82,7 @@ useEffect(() => {
     }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 p-6">
+    <div className="min-h-screen  from-gray-100 to-gray-300 p-6">
       <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Dashboard</h1>
       <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map(({ id, title, value, icon }) => (
@@ -73,7 +91,7 @@ useEffect(() => {
               {icon}
             </div>
             <div>
-              <p className="text-2xl font-semibold text-gray-900">{value}</p>
+              <p className="text-2xl font-semibold text-gray-900">{loading?<span className='text-xs'>loading...</span>:value}</p>
               <p className="text-sm uppercase tracking-wide font-medium text-gray-500">{title}</p>
             </div>
           </div>

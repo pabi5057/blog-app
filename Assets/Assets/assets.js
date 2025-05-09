@@ -26,6 +26,7 @@ import add_icon from './add_icon.png'
 import email_icon from './email_icon.png'
 import upload_area from './upload_area.png'
 import logo1 from './logo1.png'
+import dashboard from './dashboard.png'
 
 export const assets = {
     facebook_icon,
@@ -39,7 +40,9 @@ export const assets = {
     add_icon,
     email_icon,
     upload_area,
-    logo1
+    logo1,
+    dashboard
+
     }
 
     export const blog_data = [{

@@ -36,13 +36,15 @@ function Header({session}) {
                     {
                         session
                         ?<button onClick={()=>{
-                            signOut({callbackUrl:"http://localhost:3000/signup"})
+                            signOut({callbackUrl:"http://localhost:3000/"})
                         }} className="mr-8 p-2 w-40 sm:w-25 bg-black text-white border rounded-lg">Logout</button>
                         :<Link href="/signup" className="mr-8 p-2 w-40 sm:w-25 bg-black text-white border rounded-lg text-center">SignUp</Link>
                     }
-                    
-                <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 
-                border border-solid border-black shadow-[-7px_7px_0px] shadow-black">Get Started <Image src={assets.arrow} alt="" /></button>
+                    {
+                        session &&(  <Link href="/admin/addProduct" className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 
+                            border border-solid border-black shadow-[-7px_7px_0px] shadow-black">Get Started <Image src={assets.arrow} alt="" /></Link>)
+                    }
+              
                 </div>
             </div>
             <div className="text-center my-18">
