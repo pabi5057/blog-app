@@ -73,13 +73,7 @@ function page() {
     }
 
     return (
-        <>
-            {
-                status === "loading" ? (
-                    <div className="flex justify-center items-center col-span-2">
-                        <SyncLoader color="#3B82F6" size={15} margin={5} speedMultiplier={1.5} />
-                    </div>
-                ) : (
+
                     <>
                         <form className="pt-5 px-5 sm:pt-12 sm:pl-16" onSubmit={handleSubmit}>
                             <p className="text-xl">Upload Thumbnail</p>
@@ -103,10 +97,6 @@ function page() {
 
                         </form>
                     </>
-                )
-            }
-
-        </>
     );
 }
 
