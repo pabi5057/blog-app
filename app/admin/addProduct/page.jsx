@@ -74,29 +74,28 @@ function page() {
 
     return (
 
-                    <>
-                        <form className="pt-5 px-5 sm:pt-12 sm:pl-16" onSubmit={handleSubmit}>
-                            <p className="text-xl">Upload Thumbnail</p>
-                            <label htmlFor="image">
-                                <Image src={!image ? assets.upload_area : URL.createObjectURL(image)} alt="" width={140} height={140} className="mt-4 rounded-lg" />
-                            </label>
-                            <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden required />
-                            <p className="text-xl mt-4">Blog title</p>
-                            <input name="title" onChange={handleChange} value={data.title} className="w-full sm:w-[500px] mt-4 px-4 py-3 border" type="text" placeholder="Type here " required />
-                            <p className="text-xl mt-4">Blog Description</p>
-                            <textarea name="description" onChange={handleChange} value={data.description} className="w-full sm:w-[500px] mt-4 px-4 py-3 border" type="text" placeholder="write content here" required />
-                            <p className="text-xl mt-4">Blog category</p>
-                            <select className="w-40  mt-4 px-4 py-3 border text-gray-500" name="category" onChange={handleChange} value={data.category} id="" required>
-                                <option value="Technology">Technology</option>
-                                <option value="Startup">Startup</option>
-                                <option value="Lifestyle">Lifestyle</option>
-                            </select>
-                            <br />
-                            <button type="submit" className="mt-8 w-40 h-12 bg-black text-white">ADD</button>
+        <>
+            <form className="pt-5 px-5 sm:pt-12 sm:pl-16 h-screen" onSubmit={handleSubmit}>
+                <p className="text-xl">Upload Thumbnail</p>
+                <label htmlFor="image">
+                    <Image src={!image ? assets.upload_area : URL.createObjectURL(image)} alt="" width={140} height={140} className="mt-4 rounded-lg" />
+                </label>
+                <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden required />
+                <p className="text-xl mt-4">Blog title</p>
+                <input name="title" onChange={handleChange} value={data.title} className="w-full sm:w-[500px] mt-4 px-4 py-3 border" type="text" placeholder="Type here " required />
+                <p className="text-xl mt-4">Blog Description</p>
+                <textarea name="description" onChange={handleChange} value={data.description} className="w-full sm:w-[500px] mt-4 px-4 py-3 border" type="text" placeholder="write content here" required />
+                <p className="text-xl mt-4">Blog category</p>
+                <select className="w-40  mt-4 px-4 py-3 border text-gray-500" name="category" onChange={handleChange} value={data.category} id="" required>
+                    <option value="Technology">Technology</option>
+                    <option value="Startup">Startup</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                </select>
+                <button type="submit" className="ml-3 mt-8 w-40 h-12 bg-black text-white">ADD</button>
 
 
-                        </form>
-                    </>
+            </form>
+        </>
     );
 }
 

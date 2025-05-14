@@ -13,7 +13,7 @@ export default async function Home() {
    <>
    <ToastContainer theme="dark" />
      <Header session={session}/>
-     <BlogList />
+     <BlogList session={session} />
      <Footer/>
    </>
   );

@@ -58,7 +58,7 @@ function page() {
                                     <tbody>
                                         {
                                             emails.map((item, index) => {
-                                                return <SubscriptionTableItem email={item.email} date={item.Date} key={index} id={item._id} />
+                                                return <SubscriptionTableItem email={item.email} date={item.Date} key={index} id={item._id} session={session} fetchEmails={fetchEmails}/>
                                             })
                                         }
                                     </tbody>

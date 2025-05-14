@@ -5,18 +5,19 @@ import { useRouter } from "next/navigation";
 import { MdEdit } from "react-icons/md";
 import { toast } from "react-toastify";
 
-function SubscriptionTableItem({ email, date, id }) {
+function SubscriptionTableItem({ email, date, id,session,fetchEmails }) {
     const router=useRouter()
     const handleDelete = async () => {
         const res = await axios.delete(`/api/email?id=${id}`);
         const data = await res.data;
         if (data.success) {
             toast.success("Email Deleted");
+             fetchEmails();
             router.refresh();
         } else
             toast.error("Error deleting email");
     }
-
+    
     return (
         <tr className="bg-white border-b">
             <th scope="row" className="items-center gap-3 hidden sm:flex px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -31,9 +32,16 @@ function SubscriptionTableItem({ email, date, id }) {
                     year: "numeric",
                 }).replace(/ /g, " ") : "no date"}
             </td>
-            <td className="px-6 py-4" onClick={handleDelete} >
+            {
+                session ?(
+
+            <td className="px-6 py-4 cursor-pointer" onClick={handleDelete} >
                 X 
             </td>
+                ):(
+                  <td className="text-gray-400 italic">No actions</td>
+                )
+            }
 
         </tr>
     );

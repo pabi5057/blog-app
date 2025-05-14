@@ -117,3 +117,9 @@ export async function PUT(request) {
   await BlogModel.findByIdAndUpdate(blogId, blogData);
   return NextResponse.json({ message: "Blog Updated", success: true });
 }
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};

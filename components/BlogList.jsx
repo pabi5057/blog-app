@@ -6,7 +6,7 @@ import axios from "axios";
 import { ClipLoader, SyncLoader } from "react-spinners";
 
 
-function BlogList() {
+function BlogList({session}) {
     const [menu, setMenu] = useState("All");
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ function BlogList() {
                             <>
                                 {
                                     blogs.filter((item) => menu === "All" ? true : item.category === menu).map((item, index) => {
-                                        return <BlogItem item={item} id={item._id} key={index} />
+                                        return <BlogItem item={item} id={item._id} key={index} session={session}/>
 
                                     })
                                 }

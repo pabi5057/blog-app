@@ -37,8 +37,8 @@ function Header({session}) {
                         session
                         ?<button onClick={()=>{
                             signOut({callbackUrl:"http://localhost:3000/"})
-                        }} className="mr-8 p-2 w-40 sm:w-25 bg-black text-white border rounded-lg">Logout</button>
-                        :<Link href="/signup" className="mr-8 p-2 w-40 sm:w-25 bg-black text-white border rounded-lg text-center">SignUp</Link>
+                        }} className="mr-3 px-4 py-2 w-24 xs:w-18 sm:w-28 md:w-40 lg:w-40 bg-black text-white border rounded-lg">Logout</button>
+                        :<Link href="/signup" className="mr-8 p-2 w-40 sm:w-28 bg-black text-white border rounded-lg text-center">SignUp</Link>
                     }
                     {
                         session &&(  <Link href="/admin/addProduct" className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 
